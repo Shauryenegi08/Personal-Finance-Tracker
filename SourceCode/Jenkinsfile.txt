@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout([$class: 'GitSCM', 
+                    branches: [[name: 'main']], 
+                    doGenerateSubmoduleConfigurations: false, 
+                    extensions: [], 
+                    submoduleCfg: [], 
+                    userRemoteConfigs: [[url: 'https://github.com/neeraj542/Personal-Finance-Tracker.git']]
+                ])
+            }
+        }
+
+        stage('Deploy to Apache') {
+            steps {
+                bat script: '''
+                    xcopy /s /e /y "C:\\Users\\meena_gc3wq05\\Desktop\\Personal-Finance-Tracker" "C:\\Apache24\\htdocs"
+                '''
+            }
+        }
+    }
+}
